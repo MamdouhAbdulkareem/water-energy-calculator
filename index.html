@@ -84,7 +84,7 @@
     .disclaimer strong {color:#9c0909}
     .info {background:white;border:1px solid var(--border);border-radius:17px;padding:18px 21px;margin-top:17px}
     .info h3 {margin:0 0 5px;font-size:16px}
-    .info p {margin:7px 0;color:#556c7f;font-size:13px}
+    .info p {margin:12px 0;color:#556c7f;font-size:13px}
     .info a {color:#0e6f9f;text-underline-offset:3px}
     .actions {display:flex;justify-content:center;gap:9px;margin-top:15px;flex-wrap:wrap}
     .action {border:1px solid #b7c9d8;background:#fff;color:var(--navy);font-weight:750;border-radius:12px;padding:11px 16px}
@@ -95,6 +95,57 @@
     .footer .footer-rule {height:2px;width:90px;margin:0 auto 13px;background:linear-gradient(90deg,#1b6183,var(--gold));border-radius:3px}
     .toast {position:fixed;z-index:100;bottom:calc(20px + env(safe-area-inset-bottom,0px));left:50%;transform:translate(-50%,15px);background:#122f4a;color:#fff;padding:11px 17px;border-radius:12px;box-shadow:var(--shadow);font-size:13px;opacity:0;pointer-events:none;transition:.22s}
     .toast.show {opacity:1;transform:translate(-50%,0)}
+    /* توسيط عناصر الواجهة، مع إبقاء صفوف تفاصيل الفواتير مقروءة من اليمين لليسار */
+    .top .container,.overview {text-align:center}
+    .brand {justify-content:center}
+    .head-text {text-align:center}
+    .mini-total {flex-direction:column;justify-content:center;text-align:center;min-width:0;gap:7px;min-height:105px}
+    .mini-total > div:last-child {min-width:0;width:100%}
+    .mini-total b {overflow-wrap:anywhere}
+    .mini-icon {margin-inline:auto}
+    .switchlinks {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;width:100%;margin:16px 0}
+    .switchlinks a {display:flex;align-items:center;justify-content:center;text-align:center;gap:7px;min-width:0;min-height:49px;padding:9px 7px;line-height:1.4;white-space:normal}
+    .switchlinks .nav-icon {flex:none;line-height:1;font-size:17px}
+    .switchlinks .nav-short {display:none}
+    .panel-head {flex-direction:column;justify-content:center;text-align:center;gap:8px}
+    .panel-head > div:last-child {width:100%}
+    .panel-body .field > label,.panel-body .field-label,.breakdown h3 {text-align:center}
+    .panel-body .control {text-align:center;text-align-last:center}
+    .panel-body .control[type=number] {text-align:center}
+    .pill-note {display:block;text-align:center;line-height:1.7}
+    .range-top {flex-direction:column;align-items:center;justify-content:center;gap:7px}
+    .range-top .field-label {margin-bottom:0}
+    .value-row {justify-content:center}
+    .inline-group > div {min-width:0;text-align:center}
+    .check {justify-content:center}
+    .bracket {text-align:center;line-height:1.8}
+    .info {text-align:center}
+    .info p {line-height:1.95}
+    .disclaimer {text-align:center}
+    .disclaimer h2 {justify-content:center;text-align:center;gap:9px;line-height:1.5;margin-bottom:13px}
+    .disclaimer-alert-icon {display:inline-grid;place-items:center;flex:none}
+    .disclaimer-body {display:grid;grid-template-columns:minmax(0,1fr);justify-items:center;gap:14px;max-width:850px;margin:0 auto}
+    /* محاذاة النصوص الطويلة بأسلوب ضبط Word: يضبط الأسطر الكاملة، ويبقى السطر الأخير طبيعيًا في اتجاه العربية. */
+    .disclaimer-body p {width:100%;margin:0;text-align:justify;text-align-last:start;text-justify:inter-word;text-wrap:wrap;line-height:2;overflow-wrap:break-word}
+    .info p {text-align:justify;text-align-last:start;text-justify:inter-word;text-wrap:wrap;overflow-wrap:break-word}
+    /* تفاصيل الفواتير تبقى بمحاذاة محاسبية ثابتة ولا تتأثر بالتوسيط العام */
+    .breakdown .line,.breakdown .panel-total {text-align:initial}
+    .breakdown .line strong,.breakdown .panel-total b {direction:ltr;unicode-bidi:isolate;text-align:left}
+    @media (max-width:600px) {
+      .switchlinks {gap:6px}
+      .switchlinks a {gap:4px;padding:8px 4px;font-size:12px;min-height:48px}
+      .switchlinks .nav-full {display:none}
+      .switchlinks .nav-short {display:inline}
+      .switchlinks .nav-icon {font-size:15px}
+      .disclaimer-body {gap:14px}
+      .disclaimer h2 {font-size:16px}
+      .disclaimer-body p {font-size:12px;line-height:1.95}
+    }
+    @media (max-width:360px) {
+      .switchlinks {gap:4px}
+      .switchlinks a {font-size:11px;padding-inline:2px;gap:3px}
+      .switchlinks .nav-icon {font-size:13px}
+    }
     [hidden] {display:none!important}
     @media(max-width:720px) { .top {padding:25px 0 42px}.brand-logo {width:66px;height:66px;border-radius:18px}.disclaimer {padding:13px 15px}.disclaimer p {font-size:12px}.cards {grid-template-columns:1fr}.overview {padding:18px}.container {padding-inline:13px}.mini-total {padding:12px}.mini-total b {font-size:17px}.panel-body {padding-inline:18px}.panel-head {padding-inline:18px}.big-total {font-size:36px}}
     @media(max-width:380px) {.total-grid {gap:7px}.mini-total {gap:6px;padding:9px}.mini-icon {width:32px;height:32px}.mini-total b {font-size:15px}.head-text h1 {font-size:23px}.num {width:83px}.inline-group {gap:7px}}
@@ -125,10 +176,17 @@
       </div>
     </section>
     <section id="disclaimer" class="disclaimer" aria-labelledby="disclaimerTitle">
-      <h2 id="disclaimerTitle"><span aria-hidden="true">⚠</span> تنبيه مهم – إخلاء مسؤولية</h2>
-      <p>هذه الحاسبة <strong>مبادرة شخصية مستقلة وغير رسمية</strong>، أُعدّت باجتهاد فردي وفق فهم المطوّر للتعرفة المنشورة وقت إعدادها. جميع المخرجات <strong>تقديرية وتوضيحية فقط</strong>؛ وقد تتضمن أخطاء في تفسير التعرفة أو البيانات أو طريقة الحساب، بما في ذلك أخطاء جوهرية قد تجعل التقديرات <strong>غير صحيحة بالكامل</strong>. لا تمثل النتائج فواتير معتمدة أو ضمانًا للمبالغ المستحقة، ولا تُغني عن الرجوع إلى الجهات المزودة للخدمة وفواتيرها الرسمية للتحقق قبل أي قرار أو التزام مالي. ولا يتحمل مطوّر الحاسبة، <strong>في الحدود التي تجيزها الأنظمة المعمول بها</strong>، مسؤولية الخسائر أو الأضرار الناتجة عن استخدام هذه التقديرات أو الاعتماد عليها.</p>
+      <h2 id="disclaimerTitle"><span class="disclaimer-alert-icon" aria-hidden="true">⚠</span><span>تنبيه مهم – إخلاء مسؤولية</span></h2>
+      <div class="disclaimer-body">
+        <p>هذه الحاسبة <strong>مبادرة شخصية مستقلة وغير رسمية</strong>، أُعدّت باجتهاد فردي وفق فهم المطوّر للتعرفة المنشورة وقت إعدادها. جميع المخرجات <strong>تقديرية وتوضيحية فقط</strong>. قد تتضمن أخطاء في تفسير التعرفة أو البيانات أو طريقة الحساب، بما في ذلك أخطاء جوهرية قد تجعل التقديرات <strong>غير صحيحة بالكامل</strong>. لا تمثل النتائج فواتير معتمدة أو ضمانًا للمبالغ المستحقة.</p>
+        <p>لا تُغني هذه التقديرات عن الرجوع إلى الجهات المزودة للخدمة وفواتيرها الرسمية للتحقق قبل أي قرار أو التزام مالي. ولا يتحمل مطوّر الحاسبة، <strong>في الحدود التي تجيزها الأنظمة المعمول بها</strong>، مسؤولية الخسائر أو الأضرار الناتجة عن استخدام هذه التقديرات أو الاعتماد عليها.</p>
+      </div>
     </section>
-    <nav class="switchlinks" aria-label="الانتقال بين الحاسبات"><a href="#waterCard">💧 حساب المياه</a><a href="#electricCard">⚡ حساب الكهرباء</a><a href="#sources">ℹ️ التفاصيل والمصادر</a></nav>
+    <nav class="switchlinks" aria-label="الانتقال بين الحاسبات">
+      <a href="#waterCard"><span class="nav-icon" aria-hidden="true">💧</span><span class="nav-full">حاسبة المياه</span><span class="nav-short">المياه</span></a>
+      <a href="#electricCard"><span class="nav-icon" aria-hidden="true">⚡</span><span class="nav-full">حاسبة الكهرباء</span><span class="nav-short">الكهرباء</span></a>
+      <a href="#sources"><span class="nav-icon" aria-hidden="true">ℹ️</span><span>التفاصيل والمصادر</span></a>
+    </nav>
     <div class="cards">
       <section id="waterCard" class="panel water" aria-labelledby="waterHeading">
         <div class="panel-head"><div class="panel-icon" aria-hidden="true">💧</div><div><h2 id="waterHeading">فاتورة المياه</h2><p>المياه والصرف الصحي والرسوم الثابتة</p></div></div>
@@ -193,8 +251,7 @@
     <div class="actions"><button type="button" id="resetBtn" class="action">استعادة القيم الافتراضية</button></div>
     <section id="sources" class="info">
       <h3>معلومات عن الحاسبة</h3>
-      <p>تستخدم الحاسبة <b>التعرفة السكنية السعودية الجديدة المعلن بدء تطبيقها في 1 يناير 2027</b>، وتحسب شرائح الاستهلاك تصاعديًا ورسوم العداد أو القاطع وضريبة القيمة المضافة 15%. تشمل رسوم المياه الثابتة رسم الصرف الصحي فقط عند تفعيل الخدمة، ولا تحتسبه مرتين.</p>
-      <p>تعرض الحاسبة تقديرًا توضيحيًا فقط، وليس فاتورة معتمدة. قد تختلف الفاتورة الفعلية بسبب الوحدات السكنية، وتواريخ القراءة، والتسويات، ودورات الفوترة الانتقالية. ويُرجى مراجعة <a href="#disclaimer">إخلاء المسؤولية</a> أعلى الصفحة.</p>
+      <p>تستخدم الحاسبة <b>التعرفة السكنية السعودية الجديدة المعلن بدء تطبيقها في 1 يناير 2027</b>، وتحسب شرائح الاستهلاك تصاعديًا ورسوم العداد أو القاطع وضريبة القيمة المضافة 15%. تشمل رسوم المياه الثابتة رسم الصرف الصحي فقط عند تفعيل الخدمة، ولا تحتسبه مرتين. تعرض الحاسبة تقديرًا توضيحيًا فقط، وليس فاتورة معتمدة. قد تختلف الفاتورة الفعلية بسبب الوحدات السكنية، وتواريخ القراءة، والتسويات، ودورات الفوترة الانتقالية. ويُرجى مراجعة <a href="#disclaimer">إخلاء المسؤولية</a> أعلى الصفحة.</p>
       <p>روابط التعرفة: <a href="https://www.nwc.com.sa/AR/Pages/AdujstedWaterandWastewaterServicesRate.aspx" target="_blank" rel="noopener noreferrer">شركة المياه الوطنية</a> · <a href="https://www.se.com.sa/ar-SA/ourservices/columnc/bills-and-consumption/consumptiontariffs/ct2/ct2" target="_blank" rel="noopener noreferrer">السعودية للطاقة</a></p>
       <p id="installTip">لإضافة التطبيق إلى شاشة الآيفون الرئيسية: افتح الرابط في سفاري، ثم اضغط <b>مشاركة</b> واختر <b>إضافة إلى الشاشة الرئيسية</b>. بعد تثبيته وفتحه مرة واحدة على اتصال بالإنترنت، يعمل الحساب أيضًا دون اتصال.</p>
     </section>
