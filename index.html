@@ -78,6 +78,28 @@
     .electricity .panel-total {background:#fff7e9}
     .panel-total b {font-size:22px;color:var(--navy);font-variant-numeric:tabular-nums}
     .panel-total span {font-size:12px;color:#526d81;font-weight:700}
+    /* المقارنة بين التعرفتين — دون تغيير تفاصيل الحسابات الأصلية */
+    .comparison {margin-top:14px;padding:13px 14px;border:1px solid #dae5ee;background:#fbfdff;border-radius:13px}
+    .comparison h4 {font-size:13px;font-weight:800;color:var(--navy);text-align:center;margin:0 0 9px}
+    .comparison-row {display:flex;align-items:center;justify-content:space-between;gap:12px;margin:8px 0;font-size:12px;text-align:initial}
+    .comparison-row span {color:#5a6f82;flex:1;min-width:0}
+    .comparison-row strong {font-variant-numeric:tabular-nums;white-space:nowrap;direction:ltr;unicode-bidi:isolate;text-align:left;color:var(--navy)}
+    .comparison-row.delta {border-top:1px solid #dce6ec;padding-top:9px;margin-top:11px;font-weight:750}
+    .comparison-row.delta span {color:var(--navy)}
+    .comparison-row.delta strong {color:var(--navy);font-size:16px}
+    /* لون الزيادة الشهرية يحاكي لون شريط الاستهلاك في كل حاسبة. */
+    .water .comparison-row.delta span,
+    .water .comparison-row.delta strong {color:var(--blue)}
+    .electricity .comparison-row.delta span,
+    .electricity .comparison-row.delta strong {color:#94620f}
+    .comparison-note {display:block;text-align:center;color:#667b8e;font-size:11px;line-height:1.8;margin-top:8px}
+    .overview-compare {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}
+    .overview-compare-item {border:1px solid #e1e8ef;border-radius:12px;padding:10px 9px;text-align:center;background:#f9fbfd;min-width:0}
+    .overview-compare-item.increase {border-color:#efd9be;background:#fff9f0}
+    .overview-compare-item span {display:block;color:#627489;font-size:12px;line-height:1.5}
+    .overview-compare-item b {display:block;color:var(--navy);font-size:17px;line-height:1.5;white-space:nowrap;font-variant-numeric:tabular-nums}
+    .overview-compare-item.increase b {color:#9e5411}
+    @media (max-width:380px) { .overview-compare-item b {font-size:15px}.comparison-row {gap:5px;font-size:11px}.comparison-row.delta strong {font-size:14px} }
     .disclaimer {background:#fff0f0;border:2px solid #d93030;border-right:6px solid #c41919;border-radius:16px;padding:16px 19px;margin:0 0 17px;color:#941919;box-shadow:0 2px 8px #a7131314}
     .disclaimer h2 {margin:0 0 6px;font-size:17px;color:#ac1111;display:flex;gap:8px;align-items:center}
     .disclaimer p {margin:0;font-size:13px;font-weight:650;line-height:1.9;color:#921616}
@@ -92,6 +114,7 @@
     .footer {text-align:center;padding:20px 10px 35px;color:#536a7e;font-size:13px}
     .footer .rights {display:block;color:var(--navy);font-size:14px;font-weight:700;margin-bottom:4px}
     .footer .en {direction:ltr;unicode-bidi:embed;display:block;font-size:12px;letter-spacing:.1px}
+    .footer .app-version {display:block;margin-top:7px;color:#607689;font-size:11px;font-variant-numeric:tabular-nums}
     .footer .footer-rule {height:2px;width:90px;margin:0 auto 13px;background:linear-gradient(90deg,#1b6183,var(--gold));border-radius:3px}
     .toast {position:fixed;z-index:100;bottom:calc(20px + env(safe-area-inset-bottom,0px));left:50%;transform:translate(-50%,15px);background:#122f4a;color:#fff;padding:11px 17px;border-radius:12px;box-shadow:var(--shadow);font-size:13px;opacity:0;pointer-events:none;transition:.22s}
     .toast.show {opacity:1;transform:translate(-50%,0)}
@@ -174,6 +197,10 @@
         <div class="mini-total"><div class="mini-icon" aria-hidden="true">💧</div><div><span>فاتورة المياه</span><b id="waterSummary" dir="ltr">101.78 ر.س</b></div></div>
         <div class="mini-total energy"><div class="mini-icon" aria-hidden="true">⚡</div><div><span>فاتورة الكهرباء</span><b id="energySummary" dir="ltr">539.35 ر.س</b></div></div>
       </div>
+      <div class="overview-compare" aria-label="ملخص مقارنة الفاتورتين">
+        <div class="overview-compare-item"><span>الإجمالي بالتعرفة السابقة</span><b id="grandOldTotal" dir="ltr">422.34 ر.س</b></div>
+        <div class="overview-compare-item increase"><span>إجمالي الزيادة الشهرية المتوقعة</span><b id="grandIncrease" dir="ltr">+218.79 ر.س</b></div>
+      </div>
     </section>
     <section id="disclaimer" class="disclaimer" aria-labelledby="disclaimerTitle">
       <h2 id="disclaimerTitle"><span class="disclaimer-alert-icon" aria-hidden="true">⚠</span><span>تنبيه مهم – إخلاء مسؤولية</span></h2>
@@ -217,6 +244,13 @@
             <div class="line sewer-row"><span class="label">رسم الصرف الثابت</span><strong id="sewerFixed">20.00 ر.س</strong></div>
             <div class="line border-top"><span class="label">ضريبة القيمة المضافة 15%</span><strong id="waterVat">13.28 ر.س</strong></div>
             <div class="panel-total"><span>إجمالي المياه</span><b id="waterTotal">101.78 ر.س</b></div>
+            <div class="comparison" role="group" aria-label="مقارنة تعرفة المياه">
+              <h4>مقارنة فاتورة المياه</h4>
+              <div class="comparison-row"><span>بالتعرفة السابقة (حتى 2026)</span><strong id="waterOldTotal">17.54 ر.س</strong></div>
+              <div class="comparison-row"><span>بالتعرفة الجديدة (من 2027)</span><strong id="waterNewCompare">101.78 ر.س</strong></div>
+              <div class="comparison-row delta"><span id="waterDiffLabel">الزيادة الشهرية المتوقعة</span><strong id="waterIncrease">+84.24 ر.س</strong></div>
+              <small class="comparison-note" id="oldWaterNote">شامل الاستهلاك ورسم العداد السابق والضريبة.</small>
+            </div>
           </div>
         </div>
       </section>
@@ -244,6 +278,13 @@
             <div class="line"><span class="label">الرسم الثابت للقاطع</span><strong id="elecFixed">70.00 ر.س</strong></div>
             <div class="line border-top"><span class="label">ضريبة القيمة المضافة 15%</span><strong id="elecVat">70.35 ر.س</strong></div>
             <div class="panel-total"><span>إجمالي الكهرباء</span><b id="elecTotal">539.35 ر.س</b></div>
+            <div class="comparison" role="group" aria-label="مقارنة تعرفة الكهرباء">
+              <h4>مقارنة فاتورة الكهرباء</h4>
+              <div class="comparison-row"><span>بالتعرفة السابقة (حتى 2026)</span><strong id="elecOldTotal">404.80 ر.س</strong></div>
+              <div class="comparison-row"><span>بالتعرفة الجديدة (من 2027)</span><strong id="elecNewCompare">539.35 ر.س</strong></div>
+              <div class="comparison-row delta"><span id="elecDiffLabel">الزيادة الشهرية المتوقعة</span><strong id="elecIncrease">+134.55 ر.س</strong></div>
+              <small class="comparison-note">تحتسب المقارنة رسوم قراءة العداد القديمة بدل الرسم الثابت الجديد.</small>
+            </div>
           </div>
         </div>
       </section>
@@ -252,13 +293,16 @@
     <section id="sources" class="info">
       <h3>معلومات عن الحاسبة</h3>
       <p>تستخدم الحاسبة <b>التعرفة السكنية السعودية الجديدة المعلن بدء تطبيقها في 1 يناير 2027</b>، وتحسب شرائح الاستهلاك تصاعديًا ورسوم العداد أو القاطع وضريبة القيمة المضافة 15%. تشمل رسوم المياه الثابتة رسم الصرف الصحي فقط عند تفعيل الخدمة، ولا تحتسبه مرتين. تعرض الحاسبة تقديرًا توضيحيًا فقط، وليس فاتورة معتمدة. قد تختلف الفاتورة الفعلية بسبب الوحدات السكنية، وتواريخ القراءة، والتسويات، ودورات الفوترة الانتقالية. ويُرجى مراجعة <a href="#disclaimer">إخلاء المسؤولية</a> أعلى الصفحة.</p>
+      <p>أُضيفت مقارنة للتعرفة السابقة (حتى 2026) والتعرفة الجديدة (من 2027)، مع عرض فرق الفاتورة على أساس <b>كمية الاستهلاك نفسها</b> وضريبة 15%. في التعرفة السابقة للمياه تُستخدم شرائح 0.10 و1 و3 و4 و6 ريالات للمتر المكعب ورسوم خدمة العداد السابقة (5 أو 10 أو 15 ريالًا)، وفي الكهرباء تُستخدم شريحتا 18 و30 هللة ورسوم قراءة وصيانة العداد السابقة بحسب القاطع. لا تمثل المقارنة الزيادة المؤكدة في فاتورتك الفعلية. عند وجود وحدات سكنية متعددة تُقدَّر شرائح المياه السابقة بتوزيع الاستهلاك بالتساوي بينها؛ وقد تختلف النتيجة عن الفوترة الحقيقية.</p>
       <p>روابط التعرفة: <a href="https://www.nwc.com.sa/AR/Pages/AdujstedWaterandWastewaterServicesRate.aspx" target="_blank" rel="noopener noreferrer">شركة المياه الوطنية</a> · <a href="https://www.se.com.sa/ar-SA/ourservices/columnc/bills-and-consumption/consumptiontariffs/ct2/ct2" target="_blank" rel="noopener noreferrer">السعودية للطاقة</a></p>
+      <p>مراجع التعرفة السابقة: <a href="https://www.nwc.com.sa/AR/HousingSector/Pages/%D8%AF%D9%84%D9%8A%D9%84%20%D8%AA%D9%82%D8%AF%D9%8A%D9%85%20%D8%AE%D8%AF%D9%85%D8%A7%D8%AA%20%D8%A7%D9%84%D9%85%D9%8A%D8%A7%D9%87%20%D9%88%D8%A7%D9%84%D8%B5%D8%B1%D9%81%20%D8%A7%D9%84%D8%B5%D8%AD%D9%8A.pdf" target="_blank" rel="noopener noreferrer">دليل خدمات المياه والصرف الصحي</a> · <a href="https://www.sera.gov.sa/ar/consumer/electric-tariff/electric-tariff-categories/meter-reading-maintenance-and-billing-tariff" target="_blank" rel="noopener noreferrer">هيئة تنظيم الكهرباء (رسوم العداد السابقة)</a>.</p>
       <p id="installTip">لإضافة التطبيق إلى شاشة الآيفون الرئيسية: افتح الرابط في سفاري، ثم اضغط <b>مشاركة</b> واختر <b>إضافة إلى الشاشة الرئيسية</b>. بعد تثبيته وفتحه مرة واحدة على اتصال بالإنترنت، يعمل الحساب أيضًا دون اتصال.</p>
     </section>
     <footer class="footer">
       <div class="footer-rule"></div>
       <span class="rights">جميع الحقوق محفوظة</span>
       <span class="en">© 2026 — Programmed by Mamdouh Abdulkareem</span>
+      <span id="appVersion" class="app-version"></span>
     </footer>
   </main>
   <div class="toast" id="toast" role="status"></div>
@@ -266,6 +310,9 @@
     (() => {
       'use strict';
       const $ = id => document.getElementById(id);
+      // حدّث رقم الإصدار عند أي تعديل منشور لاحق: Major.Minor.Patch.
+      const APP_VERSION = '1.7.0';
+      $('appVersion').textContent = 'الإصدار ' + APP_VERSION;
       const defaults = {waterMeter:40,waterUsage:17,units:1,sewer:true,breaker:50,electricUsage:1900,billDays:30};
       const money = n => new Intl.NumberFormat('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}).format(Math.round((n + Number.EPSILON)*100)/100)+' ر.س';
       const justNum = n => new Intl.NumberFormat('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}).format(Math.round((n + Number.EPSILON)*100)/100);
@@ -285,6 +332,40 @@
         const subtotal=waterUse+sewerUse+fixedWater+fixedSewer;
         const vat=subtotal*.15;
         return {waterUse,sewerUse,fixedWater,fixedSewer,vat,total:subtotal+vat,bracket};
+      }
+      // التعرفة السابقة (حتى 2026): قرار مجلس الوزراء 95 لسنة 1437هـ ودليل خدمات المياه.
+      // القطران 21-24 و41-49 ملم غير واردين ضمن الفئات السابقة المنشورة، لذلك لا يُخمن رسمهما.
+      function oldWaterMeterFee(d) {
+        if (d<=20) return 5;
+        if (d>=25 && d<=40) return 10;
+        if (d>=50) return 15;
+        return null;
+      }
+      function oldWaterConsumption(q) {
+        return Math.min(q,15)*.10 + Math.min(Math.max(q-15,0),15)*1
+          + Math.min(Math.max(q-30,0),15)*3 + Math.min(Math.max(q-45,0),15)*4
+          + Math.max(q-60,0)*6;
+      }
+      function calcOldWater(q,diameter,units,hasSewer) {
+        const meterFee=oldWaterMeterFee(diameter);
+        if (meterFee===null) return null;
+        const waterUse=oldWaterConsumption(q/units)*units;
+        const sewerUse=hasSewer?waterUse*.5:0;
+        const subtotal=waterUse+sewerUse+meterFee;
+        return {waterUse,sewerUse,meterFee,total:subtotal*1.15};
+      }
+      // التعرفة السابقة للكهرباء: 18/30 هللة وتعرفة قراءة وصيانة العداد وإعداد الفاتورة.
+      function oldElectricityMeterFee(amps) {
+        return amps<100?10:amps<200?15:amps<300?21:amps<400?22:amps===400?25:30;
+      }
+      function calcOldElectric(q,amps,days) {
+        const use=Math.min(q,6000)*.18+Math.max(0,q-6000)*.30;
+        const fixed=oldElectricityMeterFee(amps)*days/30;
+        return {use,fixed,total:(use+fixed)*1.15};
+      }
+      function showDifference(labelId,valueId,difference){
+        $(labelId).textContent=difference>=-0.005?'الزيادة الشهرية المتوقعة':'الانخفاض الشهري المتوقع';
+        $(valueId).textContent=(difference>0?'+':difference<0?'−':'')+money(Math.abs(difference));
       }
       function calcElectric(q,amps,days){
         const first=Math.min(q,6000)*.21;
@@ -323,6 +404,8 @@
         state.sewer=Boolean(state.sewer);
         const w=calcWater(state.waterUsage,state.waterMeter,state.units,state.sewer);
         const e=calcElectric(state.electricUsage,state.breaker,state.billDays);
+        const oldW=calcOldWater(state.waterUsage,state.waterMeter,state.units,state.sewer);
+        const oldE=calcOldElectric(state.electricUsage,state.breaker,state.billDays);
         $('waterBracket').textContent='فئة الرسم الثابت: '+w.bracket.label;
         $('breakerBracket').textContent='فئة الرسم الثابت: '+e.bracket.label;
         $('unitsNote').hidden=state.units<=1;
@@ -338,6 +421,27 @@
         $('elecFixed').textContent=money(e.fixed);
         $('elecVat').textContent=money(e.vat);
         $('elecTotal').textContent=money(e.total);
+        $('waterNewCompare').textContent=money(w.total);
+        $('elecNewCompare').textContent=money(e.total);
+        $('elecOldTotal').textContent=money(oldE.total);
+        showDifference('elecDiffLabel','elecIncrease',e.total-oldE.total);
+        if (oldW) {
+          $('waterOldTotal').textContent=money(oldW.total);
+          showDifference('waterDiffLabel','waterIncrease',w.total-oldW.total);
+          $('oldWaterNote').textContent=state.units>1
+            ?'قُدّر استهلاك كل وحدة بالتساوي للتعرفة السابقة، مع رسم عداد واحد وضريبة 15%.'
+            :'شامل الاستهلاك ورسم العداد السابق وضريبة 15%.';
+          $('grandOldTotal').textContent=money(oldW.total+oldE.total);
+          const diff=(w.total+e.total)-(oldW.total+oldE.total);
+          $('grandIncrease').textContent=(diff>=0?'+':'−')+money(Math.abs(diff));
+        } else {
+          $('waterOldTotal').textContent='غير متاح';
+          $('waterDiffLabel').textContent='فرق المبلغ';
+          $('waterIncrease').textContent='غير متاح';
+          $('oldWaterNote').textContent='لا توجد فئة منشورة للرسم السابق لهذا القطر؛ اختر مقاسًا قياسيًا.';
+          $('grandOldTotal').textContent='غير متاح';
+          $('grandIncrease').textContent='غير متاح';
+        }
         $('grandTotal').innerHTML=justNum(w.total+e.total)+' <span class="currency">ر.س</span>';
         $('waterSummary').textContent=money(w.total);
         $('energySummary').textContent=money(e.total);
