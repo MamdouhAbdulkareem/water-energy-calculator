@@ -86,14 +86,13 @@
     .info h3 {margin:0 0 5px;font-size:16px}
     .info p {margin:7px 0;color:#556c7f;font-size:13px}
     .info a {color:#0e6f9f;text-underline-offset:3px}
-    .actions {display:flex;gap:9px;margin-top:15px;flex-wrap:wrap}
+    .actions {display:flex;justify-content:center;gap:9px;margin-top:15px;flex-wrap:wrap}
     .action {border:1px solid #b7c9d8;background:#fff;color:var(--navy);font-weight:750;border-radius:12px;padding:11px 16px}
     .action.primary {background:var(--navy);color:white;border-color:var(--navy)}
     .footer {text-align:center;padding:20px 10px 35px;color:#536a7e;font-size:13px}
-    .footer strong {display:block;color:var(--navy);font-size:15px;margin-bottom:3px}
+    .footer .rights {display:block;color:var(--navy);font-size:14px;font-weight:700;margin-bottom:4px}
     .footer .en {direction:ltr;unicode-bidi:embed;display:block;font-size:12px;letter-spacing:.1px}
     .footer .footer-rule {height:2px;width:90px;margin:0 auto 13px;background:linear-gradient(90deg,#1b6183,var(--gold));border-radius:3px}
-    .note {display:block;margin-top:10px;color:#6c7a89;font-size:11px}
     .toast {position:fixed;z-index:100;bottom:calc(20px + env(safe-area-inset-bottom,0px));left:50%;transform:translate(-50%,15px);background:#122f4a;color:#fff;padding:11px 17px;border-radius:12px;box-shadow:var(--shadow);font-size:13px;opacity:0;pointer-events:none;transition:.22s}
     .toast.show {opacity:1;transform:translate(-50%,0)}
     [hidden] {display:none!important}
@@ -191,7 +190,7 @@
         </div>
       </section>
     </div>
-    <div class="actions"><button type="button" id="copyBtn" class="action primary">نسخ ملخص الفاتورتين</button><button type="button" id="printBtn" class="action">طباعة / حفظ PDF</button><button type="button" id="resetBtn" class="action">استعادة القيم الافتراضية</button></div>
+    <div class="actions"><button type="button" id="resetBtn" class="action">استعادة القيم الافتراضية</button></div>
     <section id="sources" class="info">
       <h3>معلومات عن الحاسبة</h3>
       <p>تستخدم الحاسبة <b>التعرفة السكنية السعودية الجديدة المعلن بدء تطبيقها في 1 يناير 2027</b>، وتحسب شرائح الاستهلاك تصاعديًا ورسوم العداد أو القاطع وضريبة القيمة المضافة 15%. تشمل رسوم المياه الثابتة رسم الصرف الصحي فقط عند تفعيل الخدمة، ولا تحتسبه مرتين.</p>
@@ -201,9 +200,8 @@
     </section>
     <footer class="footer">
       <div class="footer-rule"></div>
-      <strong>ممدوح محمد عبدالكريم</strong>
-      <span class="en">© 2026 — Programmed by Mamdouh M. Abdulkareem</span>
-      <span class="note">جميع الحقوق محفوظة</span>
+      <span class="rights">جميع الحقوق محفوظة</span>
+      <span class="en">© 2026 — Programmed by Mamdouh Abdulkareem</span>
     </footer>
   </main>
   <div class="toast" id="toast" role="status"></div>
@@ -320,12 +318,6 @@
       bindNumber('billDays','billDays',{round:true,min:1,max:365});
       $('sewer').addEventListener('change',e=>{state.sewer=e.target.checked;recalc()});
       $('resetBtn').addEventListener('click',()=>{Object.assign(state,defaults);showInputs();recalc();notice('تمت استعادة قيمك الافتراضية')});
-      $('printBtn').addEventListener('click',()=>window.print());
-      $('copyBtn').addEventListener('click',async()=>{
-        const {w,e}=recalc();
-        const msg=`حاسبة المياه والطاقة — تعرفة 2027\nالمياه: ${state.waterUsage} م³، عداد ${state.waterMeter} ملم — ${money(w.total)}\nالكهرباء: ${state.electricUsage} ك.و.س، قاطع ${state.breaker} أمبير — ${money(e.total)}\nالإجمالي شامل الضريبة: ${money(w.total+e.total)}\nتنبيه: الحسابات تقديرية غير رسمية وقد تكون غير دقيقة؛ المرجع النهائي هو فاتورة مقدم الخدمة.\n© 2026 — Programmed by Mamdouh M. Abdulkareem`;
-        try {if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(msg);notice('تم نسخ ملخص الفاتورتين')}else{throw Error('unavailable')}}catch{notice('النسخ غير متاح هنا؛ جرّب فتح التطبيق عبر HTTPS')}
-      });
       showInputs();recalc();
       if('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
         window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
