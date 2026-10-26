@@ -93,13 +93,21 @@
     .electricity .comparison-row.delta span,
     .electricity .comparison-row.delta strong {color:#94620f}
     .comparison-note {display:block;text-align:center;color:#667b8e;font-size:11px;line-height:1.8;margin-top:8px}
-    .overview-compare {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}
-    .overview-compare-item {border:1px solid #e1e8ef;border-radius:12px;padding:10px 9px;text-align:center;background:#f9fbfd;min-width:0}
-    .overview-compare-item.increase {border-color:#efd9be;background:#fff9f0}
-    .overview-compare-item span {display:block;color:#627489;font-size:12px;line-height:1.5}
-    .overview-compare-item b {display:block;color:var(--navy);font-size:17px;line-height:1.5;white-space:nowrap;font-variant-numeric:tabular-nums}
-    .overview-compare-item.increase b {color:#9e5411}
-    @media (max-width:380px) { .overview-compare-item b {font-size:15px}.comparison-row {gap:5px;font-size:11px}.comparison-row.delta strong {font-size:14px} }
+    /* ملخص الفاتورتين بألوان مستقلة عن أشرطة الاستهلاك: السابقة رمادي، الجديدة زمردي، والفرق مرجاني. */
+    .overview-compare {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:16px}
+    .overview-compare-item {border:1px solid #d1d5db;border-radius:13px;padding:13px 10px;text-align:center;background:#f3f4f6;min-width:0;display:flex;flex-direction:column;justify-content:center;gap:7px}
+    .overview-compare-item.previous {border-color:#d1d5db;background:#f3f4f6}
+    .overview-compare-item.current {border-color:#a7d7c6;background:#ecfdf5}
+    .overview-compare-item.increase {border-color:#f0b8b4;background:#fff3f2}
+    .overview-compare-item span {display:block;color:#374151;font-size:12px;line-height:1.6;font-weight:750;min-height:2.9em}
+    .overview-compare-item.current span {color:#047857}
+    .overview-compare-item.increase span {color:#C2413B}
+    .overview-compare-item b {display:block;color:#374151;font-size:20px;line-height:1.45;white-space:nowrap;font-variant-numeric:tabular-nums;letter-spacing:-.2px}
+    .overview-compare-item.current b {color:#047857}
+    .overview-compare-item.increase b {color:#C2413B}
+    .overview-compare-item .currency {color:inherit}
+    @media (max-width:650px) {.overview-compare {grid-template-columns:1fr;gap:8px}.overview-compare-item {padding:11px 12px;gap:2px}.overview-compare-item span {min-height:0;font-size:12px}.overview-compare-item b {font-size:22px}}
+    @media (max-width:380px) { .comparison-row {gap:5px;font-size:11px}.comparison-row.delta strong {font-size:14px} }
     .disclaimer {background:#fff0f0;border:2px solid #d93030;border-right:6px solid #c41919;border-radius:16px;padding:16px 19px;margin:0 0 17px;color:#941919;box-shadow:0 2px 8px #a7131314}
     .disclaimer h2 {margin:0 0 6px;font-size:17px;color:#ac1111;display:flex;gap:8px;align-items:center}
     .disclaimer p {margin:0;font-size:13px;font-weight:650;line-height:1.9;color:#921616}
@@ -191,15 +199,15 @@
   </header>
   <main class="container">
     <section class="overview" aria-live="polite" aria-atomic="true">
-      <p class="eyebrow">إجمالي الفاتورتين المتوقع شهريًا (شامل الضريبة)</p>
-      <div id="grandTotal" class="big-total money" dir="ltr">641.13 <span class="currency">ر.س</span></div>
+      <p class="eyebrow">ملخص فاتورتي المياه والكهرباء شهريًا (شامل الضريبة)</p>
       <div class="total-grid">
         <div class="mini-total"><div class="mini-icon" aria-hidden="true">💧</div><div><span>فاتورة المياه</span><b id="waterSummary" dir="ltr">101.78 ر.س</b></div></div>
         <div class="mini-total energy"><div class="mini-icon" aria-hidden="true">⚡</div><div><span>فاتورة الكهرباء</span><b id="energySummary" dir="ltr">539.35 ر.س</b></div></div>
       </div>
       <div class="overview-compare" aria-label="ملخص مقارنة الفاتورتين">
-        <div class="overview-compare-item"><span>الإجمالي بالتعرفة السابقة</span><b id="grandOldTotal" dir="ltr">422.34 ر.س</b></div>
-        <div class="overview-compare-item increase"><span>إجمالي الزيادة الشهرية المتوقعة</span><b id="grandIncrease" dir="ltr">+218.79 ر.س</b></div>
+        <div class="overview-compare-item previous"><span>الإجمالي بالتعرفة السابقة (حتى 2026)</span><b id="grandOldTotal" dir="ltr">422.34 ر.س</b></div>
+        <div class="overview-compare-item current"><span>الإجمالي بالتعرفة الجديدة (من 2027)</span><b id="grandTotal" dir="ltr">641.13 ر.س</b></div>
+        <div class="overview-compare-item increase"><span>الإجمالي للزيادة المتوقعة (من 2027)</span><b id="grandIncrease" dir="ltr">+218.79 ر.س</b></div>
       </div>
     </section>
     <section id="disclaimer" class="disclaimer" aria-labelledby="disclaimerTitle">
@@ -311,7 +319,7 @@
       'use strict';
       const $ = id => document.getElementById(id);
       // حدّث رقم الإصدار عند أي تعديل منشور لاحق: Major.Minor.Patch.
-      const APP_VERSION = '1.7.0';
+      const APP_VERSION = '1.7.1';
       $('appVersion').textContent = 'الإصدار ' + APP_VERSION;
       const defaults = {waterMeter:40,waterUsage:17,units:1,sewer:true,breaker:50,electricUsage:1900,billDays:30};
       const money = n => new Intl.NumberFormat('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}).format(Math.round((n + Number.EPSILON)*100)/100)+' ر.س';
@@ -442,7 +450,7 @@
           $('grandOldTotal').textContent='غير متاح';
           $('grandIncrease').textContent='غير متاح';
         }
-        $('grandTotal').innerHTML=justNum(w.total+e.total)+' <span class="currency">ر.س</span>';
+        $('grandTotal').textContent=money(w.total+e.total);
         $('waterSummary').textContent=money(w.total);
         $('energySummary').textContent=money(e.total);
         try{localStorage.setItem('water-energy-v1',JSON.stringify(state))}catch{}
