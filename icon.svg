@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-label="قطرة ماء زرقاء وصاعقة كهرباء ذهبية">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#092840"/><stop offset="1" stop-color="#125274"/></linearGradient>
+    <linearGradient id="drop" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#92ebff"/><stop offset=".42" stop-color="#28b9e9"/><stop offset="1" stop-color="#0573c8"/></linearGradient>
+    <linearGradient id="bolt" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ffed9c"/><stop offset=".55" stop-color="#ffc83f"/><stop offset="1" stop-color="#f79808"/></linearGradient>
+  </defs>
+  <rect x="5" y="5" width="502" height="502" rx="112" fill="url(#bg)"/>
+  <rect x="15" y="15" width="482" height="482" rx="102" fill="none" stroke="#83d6ef" stroke-opacity=".26" stroke-width="5"/>
+  <path d="M173 78C142 122 82 199 82 264c0 85 58 145 139 145 30 0 58-9 81-28-25-31-41-68-41-105 0-64-45-137-88-198Z" fill="url(#drop)" stroke="#b7f1ff" stroke-width="10" stroke-linejoin="round"/>
+  <path d="M115 266c-3 38 10 67 30 83" stroke="#e3fbff" stroke-width="15" stroke-linecap="round" opacity=".82"/>
+  <path d="M346 65 265 245h90l-43 198 145-238h-92l38-140h-57Z" fill="url(#bolt)" stroke="#fff5c1" stroke-width="12" stroke-linejoin="round"/>
+  <path d="M349 114 307 219" stroke="#fffef0" stroke-width="8" stroke-linecap="round" opacity=".75"/>
+</svg>
